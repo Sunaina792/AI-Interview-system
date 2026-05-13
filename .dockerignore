@@ -1,0 +1,15 @@
+.git
+.gitignore
+.venv
+venv
+__pycache__
+*.pyc
+.DS_Store
+outputs/
+*.log
+.pytest_cache
+.vscode
+.idea
+node_modules
+npm-debug.log
+SUNAINA_IITD_RESUME.pdf
