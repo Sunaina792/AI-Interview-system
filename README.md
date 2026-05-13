@@ -35,6 +35,21 @@ The app is a 4-screen wizard:
 ```
 
 ---
+## 🖼️ Screenshots
+
+### Identity Verification
+![Identity Verification](identity-verification.png)
+
+### Resume Parsing
+![Resume Parsing](resume-parsing.png)
+
+### Interview Room
+![Interview Room](interview-room.png)
+
+### Final Report
+![Final Report](final-report.png)
+
+---
 
 ## 📁 Project Structure
 
