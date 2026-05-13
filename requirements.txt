@@ -1,10 +1,28 @@
+# Core CV & ML
 opencv-python
 mediapipe
 scikit-learn
-xgboost
-librosa
-streamlit
 numpy
 pandas
-matplotlib
-seaborn
+
+# Audio
+librosa
+soundfile
+sounddevice
+pygame
+gTTS
+pyttsx3
+
+# LLM & API
+groq
+python-dotenv
+
+# Resume Parsing
+pdfplumber
+python-docx
+
+# UI
+gradio
+
+# Agentic Workflow
+langgraph

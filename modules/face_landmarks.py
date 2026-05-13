@@ -8,17 +8,31 @@ import numpy as np
 import os
 import sys
 
-# ── Safe MediaPipe import (handles all versions) ──────────────
+# ── Safe MediaPipe import (handles all versions + missing DLLs) ──
+MP_AVAILABLE = False
 try:
     import mediapipe as mp
     from mediapipe.tasks import python as mp_python
     from mediapipe.tasks.python import vision as mp_vision
     NEW_API = True
+    MP_AVAILABLE = True
     print("[INFO] Using NEW MediaPipe API (>= 0.10.x)")
-except (ImportError, AttributeError):
-    import mediapipe as mp
-    NEW_API = False
-    print("[INFO] Using LEGACY MediaPipe API (0.9.x)")
+except Exception as exc:
+    mp_python = None
+    mp_vision = None
+    try:
+        # fallback older API if task module not present
+        import mediapipe as mp
+        MP_AVAILABLE = True
+        NEW_API = False
+        print("[INFO] Using LEGACY MediaPipe API (0.9.x)")
+    except Exception as inner_exc:
+        print("[WARNING] MediaPipe is not available. Face landmark functionality will be disabled.")
+        print("[WARNING] Import error:", repr(exc))
+        print("[WARNING] If you are on Windows, install Microsoft C++ Redistributable for Visual Studio 2015-2019 (msvcp140.dll, msvcp140_1.dll).")
+        MP_AVAILABLE = False
+        mp = None
+        NEW_API = False
 
 
 
@@ -63,6 +77,10 @@ class FaceLandmarkExtractor:
     def __init__(self):
         self.frame_count = 0
         self.last_result = None
+        self.enabled = MP_AVAILABLE
+        if not self.enabled:
+            print("[ERROR] FaceLandmarkExtractor disabled: MediaPipe not available.")
+            return
         if NEW_API:
             self._init_new_api()
         else:
@@ -105,6 +123,8 @@ class FaceLandmarkExtractor:
 
     def extract(self, frame):
         """For video/webcam — includes frame skipping for performance."""
+        if not self.enabled:
+            return self._empty_result(frame)
         self.frame_count += 1
         if self.frame_count % PROCESS_EVERY_N_FRAMES != 0:
             return self.last_result if self.last_result else self._empty_result(frame)
@@ -115,9 +135,13 @@ class FaceLandmarkExtractor:
 
     def extract_image(self, frame):
         """For static images — no frame skipping, processes everything."""
+        if not self.enabled:
+            return self._empty_result(frame)
         return self._run_detection(frame)
 
     def _run_detection(self, frame):
+        if not self.enabled:
+            return self._empty_result(frame)
         return self._extract_new_api(frame) if NEW_API else self._extract_legacy_api(frame)
 
     def _extract_legacy_api(self, frame):
@@ -349,7 +373,7 @@ def run_webcam_demo():
 
 
 
-# ENTRY POINT1
+# ENTRY POINT
 
 if __name__ == "__main__":
     # Command-line: python face_landmarks.py --image "D:\interview_analyzer\test.jpg"

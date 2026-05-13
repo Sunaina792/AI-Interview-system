@@ -1,22 +1,24 @@
-# ============================================================
+
+
 # MODULE 3: Eye Contact Detection
-# ============================================================
+
+
 
 import cv2
 import numpy as np
 from collections import deque
 
-# ============================================================
+
 # CONFIGURATION
-# ============================================================
+
 GAZE_THRESHOLD        = 0.25   # iris offset ratio — beyond this = looking away
 HISTORY_WINDOW        = 150    # frames to track eye contact % over
 MIN_EYE_CONTACT_SCORE = 40     # below this % = poor eye contact
 
 
-# ============================================================
+
 # EYE CONTACT DETECTOR
-# ============================================================
+
 class EyeContactDetector:
     def __init__(self):
         self.history = deque(maxlen=HISTORY_WINDOW)
@@ -101,9 +103,9 @@ class EyeContactDetector:
         return "Center"
 
 
-# ============================================================
+
 # DRAW OVERLAY
-# ============================================================
+
 def draw_eye_contact_overlay(frame, result):
     at_cam  = result["looking_at_camera"]
     gaze    = result["gaze_direction"]
@@ -138,9 +140,11 @@ def draw_eye_contact_overlay(frame, result):
     return frame
 
 
-# ============================================================
+
+
 # TEST: IMAGE
-# ============================================================
+
+
 def test_on_image(image_path: str):
     import sys, os
     sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -179,9 +183,10 @@ def test_on_image(image_path: str):
     extractor.release()
 
 
-# ============================================================
+
 # TEST: WEBCAM
-# ============================================================
+
+
 def test_webcam():
     import sys, os
     sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -218,9 +223,10 @@ def test_webcam():
     cv2.destroyAllWindows()
 
 
-# ============================================================
+
 # ENTRY POINT
-# ============================================================
+
+
 if __name__ == "__main__":
     import sys
 
