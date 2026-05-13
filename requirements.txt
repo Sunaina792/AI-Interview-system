@@ -1,17 +1,14 @@
 # Core CV & ML
-opencv-python
+opencv-python-headless    # NOT opencv-python (no display needed)
 mediapipe
 scikit-learn
 numpy
 pandas
 
-# Audio
+# Audio (remove sounddevice & pygame - no hardware access)
 librosa
 soundfile
-sounddevice
-pygame
 gTTS
-pyttsx3
 
 # LLM & API
 groq
@@ -24,5 +21,5 @@ python-docx
 # UI
 gradio
 
-# Agentic Workflow
+# Agentic
 langgraph
